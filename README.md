@@ -1,7 +1,4 @@
-# Django authentication boilerplate using JWT
-
-Writing goes here
-
+# Django JWT authentication boilerplate
 <a href = "https://github.com/itsmais/telegram-bot-github-notifications">
 <img src = "./header.png"/ alt="django and jwt logos">
 </a>
