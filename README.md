@@ -1,110 +1,77 @@
 # Django JWT authentication boilerplate
+
 <a href = "https://github.com/itsmais/telegram-bot-github-notifications">
 <img src = "./header.png"/ alt="django and jwt logos">
 </a>
 
+## Overview
+
+This boilerplate provides you with a basic Django project that implements JSON Web Tokens (JWT) authentication. It also has the `reset password` functionality.
+
 ## Steps
 
-This guide helps you get started with implementing JSON Web Tokens (JWT) authentication in a Django project.
+### 1- Clone the repository
 
-**Step 1: Set Up Virtual Environment**
-
-Create a new directory for your project and navigate to it in the terminal:
+Clone this repo and cd into the project directory `jwt_boilerplate`:
 
 ```bash
-mkdir django-jwt-auth-boilerplate
-cd django-jwt-auth-boilerplate
+git clone https://github.com/itsmais/django-jwt-auth-boilerplate
+cd django-jwt-auth-boilerplate/jwt_boilerplate
 ```
 
-Create and activate a virtual environment:
+### 2- Set up the virtual environment
+
+Start an environment called `env` and activate it:
 
 ```bash
 python -m venv venv
-source venv/bin/activate # linux
-venv\Scripts\activate # windows
+source venv/bin/activate # for linux
+venv\Scripts\activate # for windows
 ```
 
-**Step 2: Install Django**
+### 3- Install Django and needed dependencies
 
-Install Django using pip within your virtual environment:
+Install Django within the virtual environment along with the 2 dependencies:
 
 ```bash
-pip install django
+pip install django djangorestframework djangorestframework-simplejwt
 ```
 
-**Step 3: Create a Django Project**
+### 4- Running migrations and creating a superuser
 
-Create a new Django project:
-
-```bash
-django-admin startproject jwt_boilerplate
-cd jwt_boilerplate
-```
-
-**Step 4: Create a Django App**
-
-Create a new Django app within the project:
+Now, run migrations and create a superuser to be able to browse the admin dashboard and test this code:
 
 ```bash
-python manage.py startapp authentication
-```
-
-**Step 5: Install Required Packages**
-
-Install the necessary packages for JWT authentication:
-
-```bash
-pip install djangorestframework djangorestframework-simplejwt
-```
-
-**Step 6: Configure Settings**
-
-**Step 7: Configure Email provider**
-In my case, I am playing with a gmail account.
-To use Gmail as your EMAIL_HOST_USER and send emails automatically from your Django application, you'll need to configure your Gmail account to allow access for less secure apps or generate an App Password. Keep in mind that using less secure methods might expose your account to potential security risks, so it's recommended to use App Passwords for added security.
-
-Here's how you can set it up:
-
-Using App Passwords (Recommended)
-https://support.google.com/mail/answer/185833?hl=en
-Go to your Google Account settings: https://myaccount.google.com/security.
-Under the "Signing in to Google" section, click on "App passwords."
-Select the "Mail" app and the device you'll use.
-Generate the app password and copy it.
-In your Django project's settings.py, replace the value of EMAIL_HOST_PASSWORD with the generated app password.
-Using Less Secure Apps (Not Recommended)
-
-Go to your Google Account settings: https://myaccount.google.com/security.
-Under the "Less secure app access" section, turn on "Allow less secure apps."
-
-**Step 11: Run Migrations**
-
-Run the initial migrations to create the necessary database tables:
-
-```bash
-python manage.py makemigrations
+python manage.py makemigrations authentication
 python manage.py migrate
-```
-
-**Step 12: Create Superuser**
-
-Create a superuser to access the Django admin panel:
-
-```bash
 python manage.py createsuperuser
+python manage.py runserver # optional: just to see how things are looking
 ```
 
-**Step 13: Run the Development Server**
+### 5- Choose an email to send notifications from
 
-Start the development server:
+Now, we need to give Django access to an email address to be able to send password reset notifications from it.
+
+I chose to do this with a Gmail account, utilizing App Passwords. Here's a [full guide](https://support.google.com/mail/answer/185833?hl=en) on creating an App Password for a Gmail account. Once you have that, save it for the next step.
+
+### 6- Configure Django to send password reset emails
+
+In `settings.py`, change the email values depending on your provider. Of course, I am assuming that you would use a safe way to save and retrieve those passwords (like env variables) but this is out of scope for this guide.
+
+```py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # change to your provider
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'name@gmail.com'  # change email address
+EMAIL_HOST_PASSWORD = 'my app password'  # email password
+```
+
+## Checking the code
+
+### Registering a new user
 
 ```bash
-python manage.py runserver
-```
-
-## Registering an account
-
-```
 curl -X POST http://localhost:8000/api/register/ -H "Content-Type: application/json" -d '{
     "username": "new_user",
     "email": "new_user@example.com",
@@ -113,14 +80,29 @@ curl -X POST http://localhost:8000/api/register/ -H "Content-Type: application/j
 
 ```
 
-### Singing in
+### Signing in
 
+```bash
 curl -X POST http://localhost:8000/api/token/ -H "Content-Type: application/json" -d '{
 "username": "new_user",
 "password": "secure_password"
 }'
+```
+
+### Resetting password
+
+### Singing in
 
 ### Reset password
 
 The below does not work because of cookies
 curl -X POST http://localhost:8000/password_reset/ -d "email=user@example.com"
+
+follow the usual django checklist that you must follow before deployment, like taking care of the `SECRET_KEY` in `settings.py`, setting `DEBUG`to`false`, etc.
+
+## References
+
+- [Virtual environments in Python](https://docs.python.org/3/library/venv.html)
+- [Django REST framework](https://www.django-rest-framework.org/)
+- [Simple JWT plugin](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/)
+- [Gmail's App Passwords](https://support.google.com/mail/answer/185833?hl=en)
