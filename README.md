@@ -67,7 +67,7 @@ EMAIL_HOST_USER = 'name@gmail.com'  # change email address
 EMAIL_HOST_PASSWORD = 'my app password'  # email password
 ```
 
-## Checking the code
+## Running the code
 
 ### Registering a new user
 
@@ -95,10 +95,11 @@ curl -X POST http://localhost:8000/api/token/ -H "Content-Type: application/json
 
 ### Reset password
 
-The below does not work because of cookies
-curl -X POST http://localhost:8000/password_reset/ -d "email=user@example.com"
+To reset a a password, open http://localhost:8000/password_reset/ in the browser. Type in your email, and Django will send a reset link. This workflow uses Django's default views for this functionality.
 
-follow the usual django checklist that you must follow before deployment, like taking care of the `SECRET_KEY` in `settings.py`, setting `DEBUG`to`false`, etc.
+## Final words
+
+Before you include this code in production, make sure that you follow the usual django checklist that you must follow before deployment, like taking care of the `SECRET_KEY` in `settings.py`, setting `DEBUG`to`false`, etc.
 
 ## References
 
