@@ -73,9 +73,9 @@ EMAIL_HOST_PASSWORD = 'my app password'  # email password
 
 ```bash
 curl -X POST http://localhost:8000/api/register/ -H "Content-Type: application/json" -d '{
-    "username": "new_user",
-    "email": "new_user@example.com",
-    "password": "secure_password"
+    "username": "username",
+    "email": "user@example.com",
+    "password": "password"
 }'
 
 ```
@@ -84,8 +84,8 @@ curl -X POST http://localhost:8000/api/register/ -H "Content-Type: application/j
 
 ```bash
 curl -X POST http://localhost:8000/api/token/ -H "Content-Type: application/json" -d '{
-"username": "new_user",
-"password": "secure_password"
+    "username": "username",
+    "password": "password"
 }'
 ```
 
