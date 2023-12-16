@@ -89,10 +89,6 @@ curl -X POST http://localhost:8000/api/token/ -H "Content-Type: application/json
 }'
 ```
 
-### Resetting password
-
-### Singing in
-
 ### Reset password
 
 To reset a a password, open http://localhost:8000/password_reset/ in the browser. Type in your email, and Django will send a reset link. This workflow uses Django's default views for this functionality.
